@@ -1,0 +1,5 @@
+// we could highlight the checkbox to show it's been clicked:
+$('#thing').css("color","yellow");
+ 
+// or add the updated thing to a list:
+$('#things').prepend('<%=escape_javascript render(@thing) %>');

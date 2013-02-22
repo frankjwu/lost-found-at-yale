@@ -1,4 +1,11 @@
 LostFound::Application.routes.draw do
+
+  resources :losts
+
+  resources :founds
+
+  root :to => 'losts#new'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

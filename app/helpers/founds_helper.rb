@@ -1,0 +1,2 @@
+module FoundsHelper
+end

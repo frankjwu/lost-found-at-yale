@@ -1,0 +1,21 @@
+<%= form_for(@lost) do |f| %>
+  <% if @lost.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@lost.errors.count, "error") %> prohibited this lost from being saved:</h2>
+
+      <ul>
+      <% @lost.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :desc %><br />
+    <%= f.text_area :desc %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

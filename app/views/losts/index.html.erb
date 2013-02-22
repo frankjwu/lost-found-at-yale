@@ -1,0 +1,23 @@
+<h1>Listing losts</h1>
+
+<table>
+  <tr>
+    <th>Desc</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @losts.each do |lost| %>
+  <tr>
+    <td><%= lost.desc %></td>
+    <td><%= link_to 'Show', lost %></td>
+    <td><%= link_to 'Edit', edit_lost_path(lost) %></td>
+    <td><%= link_to 'Destroy', lost, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Lost', new_lost_path %>
