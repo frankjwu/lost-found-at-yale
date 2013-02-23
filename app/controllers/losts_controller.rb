@@ -14,6 +14,7 @@ class LostsController < ApplicationController
   # GET /losts/1.json
   def show
     @lost = Lost.find(params[:id])
+    @matches = Found.tagged_with(@lost.tag_list, :any => true)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -45,6 +46,7 @@ class LostsController < ApplicationController
     respond_to do |format|
       if @lost.save
         @lost.parse_desc
+        @lost.remove_extra
         format.html { redirect_to @lost, notice: 'Lost was successfully created.' }
         format.json { render json: @lost, status: :created, location: @lost }
       else

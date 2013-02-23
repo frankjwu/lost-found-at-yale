@@ -44,6 +44,7 @@ class FoundsController < ApplicationController
 
     respond_to do |format|
       if @found.save
+        @found.parse_desc
         format.html { redirect_to @found, notice: 'Found was successfully created.' }
         format.json { render json: @found, status: :created, location: @found }
       else

@@ -5,7 +5,9 @@ class Found < ActiveRecord::Base
   acts_as_taggable
 
   def parse_desc
-  	tags = self.desc.split(" ")
+  	tags = self.desc.downcase.split(" ")
   	self.tag_list = tags
   	self.save
+  end
+  
 end
