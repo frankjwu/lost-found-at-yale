@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <% @matches.each do |match| %>
+	<%= image_tag match.image_url.to_s %><br />
 	<b>Description</b><br />
 		<%= match.desc %><br />
 	<b>Date:</b><br />

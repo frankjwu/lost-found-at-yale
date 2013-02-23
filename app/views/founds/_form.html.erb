@@ -1,4 +1,4 @@
-<%= form_for(@found) do |f| %>
+<%= form_for @found, :html => {:multipart => true} do |f| %>
   <% if @found.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@found.errors.count, "error") %> prohibited this found from being saved:</h2>
@@ -22,6 +22,9 @@
   <div class="field">
     <%= f.label :location %><br />
     <%= f.text_field :location %>
+  </div>
+  <div class ="field">
+    <%= f.file_field :image %>
   </div>
   <div class="actions">
     <%= f.submit %>

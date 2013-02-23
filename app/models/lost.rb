@@ -2,7 +2,9 @@ class Lost < ActiveRecord::Base
   attr_accessible :desc, :tag_list
   validates :desc, presence: true
 
-  EXTRA_WORDS = ["a", "the", "and"]
+  EXTRA_WORDS = ["a", "the", "and", "for", "in", "is", "are", "am",
+  	"I", "we", "of", "it", "he", "she", "we", "this", "with", "that",
+  	"so", "as"]
 
   acts_as_taggable
 

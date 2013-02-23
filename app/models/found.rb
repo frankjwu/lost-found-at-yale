@@ -1,8 +1,9 @@
 class Found < ActiveRecord::Base
-  attr_accessible :date, :desc, :location
-  validates :date, :desc, :location, presence: true
+  attr_accessible :date, :desc, :location, :image
+  validates :date, :desc, :location, :image, presence: true
 
   acts_as_taggable
+  mount_uploader :image, ImageUploader
 
   def parse_desc
   	tags = self.desc.downcase.split(" ")
