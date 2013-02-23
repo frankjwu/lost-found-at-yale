@@ -1,4 +1,5 @@
 class LostsController < ApplicationController
+  before_filter :getMe
   # GET /losts
   # GET /losts.json
   def index
