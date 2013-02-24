@@ -3,6 +3,7 @@
 
 class User < ActiveRecord::Base
   require 'net/ldap'
+  has_many :founds
   
   # Associations
  

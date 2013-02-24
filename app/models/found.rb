@@ -2,6 +2,8 @@ class Found < ActiveRecord::Base
   attr_accessible :date, :desc, :location, :image
   validates :date, :desc, :location, :image, presence: true
 
+  belongs_to :user
+
   acts_as_taggable
   mount_uploader :image, ImageUploader
 
