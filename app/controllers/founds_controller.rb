@@ -43,6 +43,7 @@ class FoundsController < ApplicationController
   # POST /founds.json
   def create
     @found = Found.new(params[:found])
+    @found.user_id = @me.id
 
     respond_to do |format|
       if @found.save

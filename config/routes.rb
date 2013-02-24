@@ -2,6 +2,7 @@ LostFound::Application.routes.draw do
 
   match '/about', to: 'static_pages#about'
   match '/start', to: 'losts#new'
+  match '/thanks', to: 'static_pages#thanks'
 
   resources :losts
   resources :founds

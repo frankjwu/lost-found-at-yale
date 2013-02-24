@@ -1,4 +1,4 @@
-<h1>Is this it?</h1>
+<center><h1>Is this it?</h1>
 <p>click "contact" to send a message and get your stuff back!</p>
 
 <ul class="thumbnails">
@@ -8,7 +8,10 @@
 					<p><%= match.desc %><br />
 					<b>Location found:</b> <%= match.location %><br />
 					<b>Date found:</b> <%= match.date %><br />
+					<h3>Is this yours?</h3>
+					<%= link_to "Contact Finder", "mailto:#{@me.email}?subject=Yale Lost and Found - You found it!", class: "btn btn-success" %><br />
           </p>
     	</li>
 <% end %>
 </ul>
+</center>
