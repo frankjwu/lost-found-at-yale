@@ -29,8 +29,8 @@ gem 'acts-as-taggable-on'
 gem 'carrierwave'
 gem 'rmagick'
 
-gem 'net-ldap'
 gem 'rubycas-client'
+gem 'mechanize'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

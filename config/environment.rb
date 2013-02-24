@@ -9,3 +9,7 @@ CASClient::Frameworks::Rails::Filter.configure(
   :username_session_key => :cas_user,
   :extra_attributes_session_key => :cas_extra_attributes
 )
+
+credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
+ENV['CAS_NETID'] = credentials['username']
+ENV['CAS_PASS'] = credentials['password']

@@ -1,63 +1,80 @@
-# credit to Bay Gross for posting on how to get CAS authentication
-# borrowed from: https://gist.github.com/baygross/2054898
+# credit to Zack Reneau-Wedeen
+# https://gist.github.com/zackrw/3794895
 
+require 'mechanize'
+ 
 class User < ActiveRecord::Base
-  require 'net/ldap'
+  KNOWN_AS = /^\s*Known As:\s*$/i
+  EMAIL = /^\s*Email Address:\s*$/i
+  YEAR = /^\s*Class Year:\s*$/i
+  SCHOOL = /^\s*Division:\s*$/i
+  COLLEGE = /^\s*Residential College:\s*$/i
+  LEAD_SPACE = /^\s+/
+  TRAIL_SPACE = /\s+$/
+ 
+  before_validation :repair
+
   has_many :founds
-  
-  # Associations
  
-  # Validations
-  validates_uniqueness_of :email, :message => "Conflicting email address."
+  validates_uniqueness_of :email, :message => 'email address conflicts'
+  validates_uniqueness_of :netid, :message => 'netid conflicts'
  
-  # Callbacks
-  after_create :populateLDAP
-    
-  # Accessors 
-  def name
-    self.fname.capitalize + " " + self.lname.capitalize
+  def make_cas_browser
+    browser = Mechanize.new
+    browser.get( 'https://secure.its.yale.edu/cas/login' )
+    form = browser.page.forms.first
+    form.username = ENV['CAS_NETID']
+    form.password = ENV['CAS_PASS']
+    form.submit
+    browser
   end
-  
  
-protected
+  # update a user with the any extra available info from the yale directory
+  def repair
+    user_hash = self.get_user
+    self.merge user_hash
+  end
  
-  #populate contact fields from LDAP
-  def populateLDAP
-    
-    #quit if no email or netid to work with
-    self.email ||= ''
-    return if !self.email.include?('@yale.edu') && !self.netid
  
-    begin
-      ldap = Net::LDAP.new( :host =>"directory.yale.edu" , :port =>"389" )
+  def get_user
+    browser = make_cas_browser
+    netid = self.netid
+    user_hash = {}
  
-      #set e filter
-      if !self.email.blank?
-        f = Net::LDAP::Filter.eq('mail', self.email)
-      else #netid
-        f = Net::LDAP::Filter.eq('uid', self.netid)
+    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=uid%3D#{netid}")
+ 
+    browser.page.search('tr').each do |tr|
+      field = tr.at('th').text
+      value = tr.at('td').text.sub(LEAD_SPACE, '').sub(TRAIL_SPACE, '')
+      case field
+      when KNOWN_AS
+        user_hash[:fname] = value
+      when EMAIL
+        user_hash[:email] = value
+        name = name_from_email(value)
+        user_hash[:given_name] = name[:first]
+        user_hash[:lname] = name[:last]
+      when YEAR
+        year = value.to_i
+        user_hash[:year] = year != 0 ? year : nil
+      when SCHOOL
+        user_hash[:school] = value
+      when COLLEGE
+        user_hash[:college] = value
       end
- 
-      b = 'ou=People,o=yale.edu'
-      p = ldap.search(:base => b, :filter => f, :return_result => true).first
-    
-    rescue Exception => e
-          logger.debug :text => e
-          logger.debug :text => "*** ERROR with LDAP"
-          guessFromEmail
     end
-  
-    self.netid = ( p['uid'] ? p['uid'][0] : '' )
-    self.fname = ( p['knownAs'] ? p['knownAs'][0] : '' )
-    if self.fname.blank?
-      self.fname = ( p['givenname'] ? p['givenname'][0] : '' )
-    end
-    self.lname = ( p['sn'] ? p['sn'][0] : '' )
-    self.email = ( p['mail'] ? p['mail'][0] : '' )
-    self.year = ( p['class'] ? p['class'][0].to_i : 0 )
-    self.college = ( p['college'] ? p['college'][0] : '' )
-    self.save!
  
+    # Use the name we got from the email if there is no "Known As" field.
+    if user_hash[:given_name] && !user_hash[:fname]
+      user_hash[:fname] = user_hash[:given_name]
+    end
+ 
+    user_hash
   end
-  
+ 
+  def merge(hash) # non-greedy merge for the user
+    hash.each do |key, val|
+      self[key] = val unless self[key]
+    end
+  end
 end
