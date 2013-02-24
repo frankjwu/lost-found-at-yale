@@ -47,8 +47,8 @@ class FoundsController < ApplicationController
     respond_to do |format|
       if @found.save
         @found.parse_desc
-        format.html { redirect_to @found, notice: 'Found was successfully created.' }
-        format.json { render json: @found, status: :created, location: @found }
+        format.html { redirect_to thanks_path, notice: 'Found was successfully created.' }
+        format.json { render json: thanks_path, status: :created, location: thanks_path }
       else
         format.html { render action: "new" }
         format.json { render json: @found.errors, status: :unprocessable_entity }

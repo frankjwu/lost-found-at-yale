@@ -13,4 +13,7 @@ class StaticPagesController < ApplicationController
   		redirect_to :home
   	end
   end
+
+  def thanks
+  end
 end
