@@ -1,3 +1,4 @@
+<% if (not @matches.empty?) %>
 <center><h1>Is this it?</h1>
 <p>Click "Contact Finder" to send a message and get your stuff back!</p>
 
@@ -15,3 +16,8 @@
 <% end %>
 </ul>
 </center>
+<% else %>
+<center><h1>No matches found. :(</h1>
+	<p>Try again later?</p>
+</center>
+<% end %>
