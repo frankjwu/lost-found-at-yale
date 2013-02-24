@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_login?
-
 protected
  
   def getMe
@@ -13,7 +11,8 @@ protected
     end
   end
 
-  def skip_login? 
-    false 
+  def skip_login?
+    false
   end
+
 end

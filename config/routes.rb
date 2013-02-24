@@ -1,11 +1,9 @@
 LostFound::Application.routes.draw do
 
-  get "static_pages/home"
-
-  get "static_pages/about"
+  match '/about', to: 'static_pages#about'
+  match '/start', to: 'losts#new'
 
   resources :losts
-
   resources :founds
 
   root :to => 'static_pages#home'

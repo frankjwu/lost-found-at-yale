@@ -1,5 +1,6 @@
 class LostsController < ApplicationController
   before_filter :getMe
+  before_filter CASClient::Frameworks::Rails::Filter, :unless => :skip_login?
   # GET /losts
   # GET /losts.json
   def index

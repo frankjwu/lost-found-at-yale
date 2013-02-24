@@ -1,19 +1,16 @@
 class StaticPagesController < ApplicationController
+	before_filter CASClient::Frameworks::Rails::Filter, :except => [:home, :about]
+	before_filter :getMe
+
   def home
-  	# skip CAS authentication
-  	def skip_login?
-  		true
-  	end
-
-
   end
 
   def about
-  	#skip CAS authentication
-  	def skip_login?
-  		true
-  	end
+  end
 
-  	
+  def start
+  	if !@me
+  		redirect_to :home
+  	end
   end
 end

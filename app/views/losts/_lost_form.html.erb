@@ -1,0 +1,32 @@
+<center>
+  <%= form_for(@lost) do |f| %>
+  <% if @lost.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@lost.errors.count, "error") %> prohibited this lost from being saved:</h2>
+
+      <ul>
+      <% @lost.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+</center>
+<div class= "row">
+  <div class= "span5 offset3">
+  <ol>
+    <li>Write a short description of what you lost.</li>
+    <li>Look through the results, which are the closest matches in our system.</li>
+    <li>Claim the item.</li>
+    <li>Thank your finder and feel great when you get your item back!</li>
+  </ol>
+ </div>
+</div>
+<br />
+<center>
+  <div class="field">
+    <%= f.text_field :desc, class: "span9", rows: "1" %>
+  </div>
+    <%= f.submit "Search!", class: "btn btn-large" %>
+<% end %>
+</center>

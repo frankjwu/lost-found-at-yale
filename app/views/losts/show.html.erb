@@ -1,11 +1,14 @@
-<p id="notice"><%= notice %></p>
+<h1>Is this it?</h1>
+<p>click "contact" to send a message and get your stuff back!</p>
 
-<% @matches.each do |match| %>
-	<%= image_tag match.image_url.to_s %><br />
-	<b>Description</b><br />
-		<%= match.desc %><br />
-	<b>Date:</b><br />
-		<%= match.date %><br />
-	<b>Location:</b><br />
-		<%= match.location %><br />
+<ul class="thumbnails">
+<% for match in @matches %>
+    	<li class="span4 thumbnail">
+      	<%= image_tag match.image_url.to_s %><br />
+					<p><%= match.desc %><br />
+					<b>Location found:</b> <%= match.location %><br />
+					<b>Date found:</b> <%= match.date %><br />
+          </p>
+    	</li>
 <% end %>
+</ul>
